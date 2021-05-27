@@ -1,0 +1,11 @@
+.body{
+  margin: 0;
+  padding: 0;
+  background-color: #eeeeed;
+}
+.App{
+  padding: 5vh 5vw 5vh 5vw;
+  width: 90vw;
+  border-radius: 15px;
+  overflow: hidden;
+}
