@@ -3,6 +3,7 @@ import { Controlled as ControlledEditor } from 'react-codemirror2';
 import { Typography, Select, InputLabel, MenuItem, FormControl, useMediaQuery, Fab, Dialog, DialogTitle,DialogContent, DialogContentText, DialogActions, Button, TextField } from '@material-ui/core';
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 import { useTheme } from '@material-ui/core/styles';
+import { clientId, clientSecret } from '../../../Server/resources';
 import axios from 'axios';
 import 'codemirror/mode/clike/clike'
 import 'codemirror/mode/python/python'
@@ -23,9 +24,12 @@ function Ide({ value, onChange }) {
     const [language, setLanguage] = useState("");
     const [lng, setLng] = useState("");
     const [output, setOutput] = useState("Wait for a couple of seconds please.");
+    const [time, setTime] = useState(0);
+    const [memory, setMemory] = useState(0);
     const [openIn, setOpenIn] = React.useState(false);
     const [openOut, setOpenOut] = React.useState(false);
     const [input, setInput] = useState("");
+    const [version, setVersion] = useState(3);
 
     const handlechange = (e) => {
         setLanguage(lang_store[e.target.value]);
@@ -64,8 +68,15 @@ function Ide({ value, onChange }) {
     // API call code starts
     var config = {
         method: 'POST',
-        url: 'https://codexweb.netlify.app/.netlify/functions/enforceCode',
-        data : JSON.stringify({ "code":value, "language":language, "input": input })
+        url: 'https://api.jdoodle.com/v1/execute',
+        data : JSON.stringify({
+            "clientId": clientId,
+            "clientSecret": clientSecret,
+            "script": value,
+            "stdin": input,
+            "language": language,
+            "versionIndex": version
+        })
     };
 
     const compileRun = () => {
@@ -78,19 +89,9 @@ function Ide({ value, onChange }) {
 
         return axios(config)
             .then(function (response) {
-                let list = response.data.output.split('\n');
-                // console.log(list);
-                var out = "";
-                for(let i of list) {
-                    if(i!=="") {
-                        out = out + i + '\n';
-                    }
-                    else {
-                        break;
-                    }
-                }
-                setOutput(out);
-                // console.log(response.data.output);
+                setOutput(response.output);
+                setTime(response.cpuTime);
+                setMemory(response.memory);
             })
             .catch(function (error) {
                 setOutput("Error Executing the Code");
@@ -101,17 +102,17 @@ function Ide({ value, onChange }) {
 
     const lang = {
         c: "text/x-c++src",
-        cpp: "text/x-c++src",
-        cs: "text/x-c++src",
+        cpp17: "text/x-c++src",
+        csharp: "text/x-c++src",
         java: "text/x-c++src",
-        py: "text/x-python",
-        rb: "text/x-ruby",
-        kt: "text/x-c++src",
+        python3: "text/x-python",
+        ruby: "text/x-ruby",
+        kotlin: "text/x-c++src",
         swift: "text/x-swift"
     }
 
     const lang_show = [ "C", "C++19", "C#", "Java", "Python3", "Ruby", "Kotlin", "Swift" ]
-    const lang_store = [ "c", "cpp", "cs", "java", "py", "rb", "kt", "swift" ]
+    const lang_store = [ "c", "cpp17", "csharp", "java", "python3", "ruby", "kotlin", "swift" ]
 
     return (
         <div className="window">
