@@ -58,7 +58,7 @@ function Ide({ value, onChange }) {
         method: 'POST',
         url: `${resources.url}/create`,
         headers: { 
-            'x-rapidapi-key': 'ea36c32c45mshf235e5b46ea12b6p157005jsn655911988c03', 
+            'x-rapidapi-key': `${resources.apiKey}`, 
             'x-rapidapi-host': 'paiza-io.p.rapidapi.com', 
             'Content-Type': 'application/json'
         },
@@ -91,7 +91,7 @@ function Ide({ value, onChange }) {
                         }
                     })
                         .then((res) => {
-                            setOutput(res.data?.stdout || res.data.error);
+                            setOutput(res.data?.stdout || res.data.build_stderr);
                             setTime(res.data.time);
                             setMemory(res.data.memory);
                             console.log(`Time taken: ${time}`);
@@ -161,7 +161,7 @@ function Ide({ value, onChange }) {
                     lineNumbers: true                        
                 }}
             />
-            <Fab color="primary" aria-label="add" onClick={inputToggle}>
+            <Fab color="primary" aria-label="add" onClick={inputToggle} style={{zIndex: 100}}>
                 <PlayArrowRoundedIcon />
             </Fab>
             <Dialog
@@ -176,8 +176,8 @@ function Ide({ value, onChange }) {
                 <DialogContent className="input-field">
                     <TextField
                         id="filled-textarea"
-                        label="Multiline Placeholder"
-                        placeholder="Placeholder"
+                        label="Input"
+                        placeholder="Type your input here"
                         multiline
                         variant="filled"
                         onChange={Input}
