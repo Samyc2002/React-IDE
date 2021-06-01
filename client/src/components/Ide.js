@@ -3,7 +3,7 @@ import { Controlled as ControlledEditor } from 'react-codemirror2';
 import { Typography, Select, InputLabel, MenuItem, FormControl, useMediaQuery, Fab, Dialog, DialogTitle,DialogContent, DialogContentText, DialogActions, Button, TextField } from '@material-ui/core';
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 import { useTheme } from '@material-ui/core/styles';
-import { clientId, clientSecret } from '../../../Server/resources';
+import { clientId, clientSecret } from '../../resources';
 import axios from 'axios';
 import 'codemirror/mode/clike/clike'
 import 'codemirror/mode/python/python'
