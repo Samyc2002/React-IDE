@@ -3,12 +3,14 @@ import { Controlled as ControlledEditor } from 'react-codemirror2';
 import { Typography, Select, InputLabel, MenuItem, FormControl, useMediaQuery, Fab, Dialog, DialogTitle,DialogContent, DialogContentText, DialogActions, Button, TextField } from '@material-ui/core';
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 import { useTheme } from '@material-ui/core/styles';
-import { clientId, clientSecret } from './resources';
+
 import axios from 'axios';
 import 'codemirror/mode/clike/clike'
 import 'codemirror/mode/python/python'
 import 'codemirror/mode/ruby/ruby'
 import 'codemirror/mode/swift/swift'
+
+import * as resources from './resources';
 import './styles.css';
 
 function Ide({ value, onChange }) {
@@ -29,38 +31,10 @@ function Ide({ value, onChange }) {
     const [openIn, setOpenIn] = React.useState(false);
     const [openOut, setOpenOut] = React.useState(false);
     const [input, setInput] = useState("");
-    const [version, setVersion] = useState(3);
 
     const handlechange = (e) => {
         setLanguage(lang_store[e.target.value]);
         setLng(lang_show[e.target.value])
-        switch(language) {
-            case 'c':
-                setVersion(4);
-                break;
-            case 'cpp17':
-                setVersion(0);
-                break;
-            case 'csharp':
-                setVersion(3);
-                break;
-            case 'java':
-                setVersion(3);
-                break;
-            case 'python3':
-                setVersion(3);
-                break;
-            case 'ruby':
-                setVersion(3);
-                break;
-            case 'kotlin':
-                setVersion(2);
-                break;
-            case 'swift':
-                setVersion(3);
-                break;
-            default: break;
-        }
     }
     
     const handleCloseIn = () => {
@@ -79,31 +53,20 @@ function Ide({ value, onChange }) {
         setInput(e.target.value);
     }
 
-    const store = String(value);
-
-    var code = '';
-
-    for(let i of store) {
-        if(i==='\n') {
-            code = code+'';
-        }
-        else {
-            code = code+i;
-        }
-    }
-    
     // API call code starts
-    var config = {
+    var compile = {
         method: 'POST',
-        url: 'https://api.jdoodle.com/v1/execute',
+        url: `${resources.url}/create`,
+        headers: { 
+            'x-rapidapi-key': 'ea36c32c45mshf235e5b46ea12b6p157005jsn655911988c03', 
+            'x-rapidapi-host': 'paiza-io.p.rapidapi.com', 
+            'Content-Type': 'application/json'
+        },
         data : JSON.stringify({
-            "clientId": clientId,
-            "clientSecret": clientSecret,
-            "script": value,
-            "stdin": input,
-            "language": language,
-            "versionIndex": version
-        })
+                source_code: value,
+                language: language,
+                input: input
+            })
     };
 
     const compileRun = () => {
@@ -114,13 +77,29 @@ function Ide({ value, onChange }) {
 
         setOutput("Wait for a couple of seconds please.");
 
-        return axios(config)
+        axios(compile)
             .then(function (response) {
-                setOutput(response.output);
-                setTime(response.cpuTime);
-                console.log(`Time taken: ${time}`);
-                setMemory(response.memory);
-                console.log(`Memory used: ${memory}`);
+                console.log(response);
+                setTimeout(() => {
+                    axios.get(`${resources.url}/get_details`, {
+                        params: {
+                            id: response.data?.id
+                        },
+                        headers: {
+                            'x-rapidapi-key': 'ea36c32c45mshf235e5b46ea12b6p157005jsn655911988c03',
+                            'x-rapidapi-host': 'paiza-io.p.rapidapi.com'
+                        }
+                    })
+                        .then((res) => {
+                            setOutput(res.data?.stdout || res.data.error);
+                            setTime(res.data.time);
+                            setMemory(res.data.memory);
+                            console.log(`Time taken: ${time}`);
+                            console.log(`Memory used: ${memory}`);
+                            console.log(res);
+                        })
+                        .catch((err) => console.log(err));
+                }, 10000);
             })
             .catch(function (error) {
                 setOutput("Error Executing the Code");
@@ -131,7 +110,7 @@ function Ide({ value, onChange }) {
 
     const lang = {
         c: "text/x-c++src",
-        cpp17: "text/x-c++src",
+        cpp: "text/x-c++src",
         csharp: "text/x-c++src",
         java: "text/x-c++src",
         python3: "text/x-python",
@@ -141,7 +120,7 @@ function Ide({ value, onChange }) {
     }
 
     const lang_show = [ "C", "C++19", "C#", "Java", "Python3", "Ruby", "Kotlin", "Swift" ]
-    const lang_store = [ "c", "cpp17", "csharp", "java", "python3", "ruby", "kotlin", "swift" ]
+    const lang_store = [ "c", "cpp", "csharp", "java", "python3", "ruby", "kotlin", "swift" ]
 
     return (
         <div className="window">

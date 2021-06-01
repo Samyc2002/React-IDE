@@ -1,3 +1,3 @@
-export const clientId = '1ffbbc88070a9acb969a54228699d5dc';
+export const apiKey = "ea36c32c45mshf235e5b46ea12b6p157005jsn655911988c03";
 
-export const clientSecret = '24dde12af2984e158d0c61cbe942e5f28f63f989328814b1aedf95664377a5e1';
+export const url = "https://paiza-io.p.rapidapi.com/runners";
