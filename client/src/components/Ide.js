@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Controlled as ControlledEditor } from 'react-codemirror2';
-import { Typography, Select, InputLabel, MenuItem, FormControl, useMediaQuery, Fab, Dialog, DialogTitle,DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
+import { Typography, Select, InputLabel, MenuItem, FormControl, useMediaQuery, Fab, Dialog, DialogTitle,DialogContent, DialogContentText, DialogActions, Button, TextField } from '@material-ui/core';
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
 import { useTheme } from '@material-ui/core/styles';
 import axios from 'axios';
@@ -23,16 +23,30 @@ function Ide({ value, onChange }) {
     const [language, setLanguage] = useState("");
     const [lng, setLng] = useState("");
     const [output, setOutput] = useState("Wait for a couple of seconds please.");
-    const [open, setOpen] = React.useState(false);
+    const [openIn, setOpenIn] = React.useState(false);
+    const [openOut, setOpenOut] = React.useState(false);
+    const [input, setInput] = useState("");
 
     const handlechange = (e) => {
         setLanguage(lang_store[e.target.value]);
         setLng(lang_show[e.target.value])
     }
     
-    const handleClose = () => {
-        setOpen(false);
+    const handleCloseIn = () => {
+        setOpenIn(false);
     };
+
+    const handleCloseOut = () => {
+        setOpenOut(false);
+    };
+
+    const inputToggle = () => {
+        setOpenIn(true);
+    }
+
+    const Input = (e) => {
+        setInput(e.target.value);
+    }
 
     const store = String(value);
 
@@ -51,18 +65,32 @@ function Ide({ value, onChange }) {
     var config = {
         method: 'POST',
         url: 'https://codexweb.netlify.app/.netlify/functions/enforceCode',
-        data : JSON.stringify({ "code":value, "language":language, "input":"" })
+        data : JSON.stringify({ "code":value, "language":language, "input": input })
     };
 
     const compileRun = () => {
         
-        setOpen(true);
+        setOpenIn(false);
+        
+        setOpenOut(true);
 
         setOutput("Wait for a couple of seconds please.");
 
         return axios(config)
             .then(function (response) {
-                setOutput(response.data.output);
+                let list = response.data.output.split('\n');
+                // console.log(list);
+                var out = "";
+                for(let i of list) {
+                    if(i!=="") {
+                        out = out + i + '\n';
+                    }
+                    else {
+                        break;
+                    }
+                }
+                setOutput(out);
+                // console.log(response.data.output);
             })
             .catch(function (error) {
                 setOutput("Error Executing the Code");
@@ -124,23 +152,50 @@ function Ide({ value, onChange }) {
                     lineNumbers: true                        
                 }}
             />
-            <Fab color="primary" aria-label="add" onClick={compileRun}>
+            <Fab color="primary" aria-label="add" onClick={inputToggle}>
                 <PlayArrowRoundedIcon />
             </Fab>
             <Dialog
                 fullScreen={fullScreen}
                 fullWidth={!fullScreen}
+                maxWidth='xs'
+                open={openIn}
+                onClose={handleCloseIn}
+                aria-labelledby="responsive-dialog-title"
+            >
+                <DialogTitle id="responsive-dialog-title">Input</DialogTitle>
+                <DialogContent className="input-field">
+                    <TextField
+                        id="filled-textarea"
+                        label="Multiline Placeholder"
+                        placeholder="Placeholder"
+                        multiline
+                        variant="filled"
+                        onChange={Input}
+                    />
+                    <br/>
+                    <DialogContentText><b>NOTE:</b> <i>Give the input exactly as needed with appropriate newlines and spaces.</i></DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                <Button autoFocus onClick={compileRun} color="primary">
+                    <Typography variant="subtitle1" className="close">RUN</Typography>
+                </Button>
+                </DialogActions>
+            </Dialog>
+            <Dialog
+                fullScreen={fullScreen}
+                fullWidth={!fullScreen}
                 maxWidth='sm'
-                open={open}
-                onClose={handleClose}
+                open={openOut}
+                onClose={handleCloseOut}
                 aria-labelledby="responsive-dialog-title"
             >
                 <DialogTitle id="responsive-dialog-title">Output</DialogTitle>
                 <DialogContent>
-                <DialogContentText>{`${output}`}</DialogContentText>
+                    <DialogContentText><pre className="output-formatting">{`${output}`}</pre></DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                <Button autoFocus onClick={handleClose} color="primary">
+                <Button autoFocus onClick={handleCloseOut} color="primary">
                     <Typography variant="subtitle1" className="close">CLOSE</Typography>
                 </Button>
                 </DialogActions>

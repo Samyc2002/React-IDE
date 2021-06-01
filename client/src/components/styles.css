@@ -72,3 +72,14 @@
     font-family: 'Quicksand', sans-serif;
     font-weight: 600;
 }
+.output-formatting{
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 500;
+}
+.input-field{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
