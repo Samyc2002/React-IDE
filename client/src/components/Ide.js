@@ -34,6 +34,33 @@ function Ide({ value, onChange }) {
     const handlechange = (e) => {
         setLanguage(lang_store[e.target.value]);
         setLng(lang_show[e.target.value])
+        switch(language) {
+            case 'c':
+                setVersion(4);
+                break;
+            case 'cpp17':
+                setVersion(0);
+                break;
+            case 'csharp':
+                setVersion(3);
+                break;
+            case 'java':
+                setVersion(3);
+                break;
+            case 'python3':
+                setVersion(3);
+                break;
+            case 'ruby':
+                setVersion(3);
+                break;
+            case 'kotlin':
+                setVersion(2);
+                break;
+            case 'swift':
+                setVersion(3);
+                break;
+            default: break;
+        }
     }
     
     const handleCloseIn = () => {
@@ -91,7 +118,9 @@ function Ide({ value, onChange }) {
             .then(function (response) {
                 setOutput(response.output);
                 setTime(response.cpuTime);
+                console.log(`Time taken: ${time}`);
                 setMemory(response.memory);
+                console.log(`Memory used: ${memory}`);
             })
             .catch(function (error) {
                 setOutput("Error Executing the Code");
