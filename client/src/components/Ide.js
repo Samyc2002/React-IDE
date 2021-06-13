@@ -29,7 +29,6 @@ function Ide({ value, onChange }) {
         if(value.endsWith("[")) {
             value = value + ']';
         }
-        console.log(value);
         onChange(value);
     }
     
