@@ -20,6 +20,16 @@ function Ide({ value, onChange }) {
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
     
     const handleChange = (editor, data, value) => {
+        if(value.endsWith("(")) {
+            value = value + ')';
+        }
+        if(value.endsWith("{")) {
+            value = value + '}';
+        }
+        if(value.endsWith("[")) {
+            value = value + ']';
+        }
+        console.log(value);
         onChange(value);
     }
     
