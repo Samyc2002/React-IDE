@@ -9,6 +9,19 @@ import 'codemirror/mode/clike/clike'
 import 'codemirror/mode/python/python'
 import 'codemirror/mode/ruby/ruby'
 import 'codemirror/mode/swift/swift'
+import 'codemirror/addon/hint/show-hint'
+import 'codemirror/addon/hint/anyword-hint'
+import 'codemirror/addon/edit/matchbrackets'
+import 'codemirror/addon/edit/matchtags'
+import 'codemirror/addon/edit/closebrackets'
+import 'codemirror/addon/edit/closetag'
+import 'codemirror/addon/comment/comment'
+import 'codemirror/addon/fold/foldcode'
+import 'codemirror/addon/fold/foldgutter'
+import 'codemirror/addon/fold/brace-fold'
+import 'codemirror/addon/fold/comment-fold'
+import 'codemirror/addon/fold/indent-fold'
+import 'codemirror/addon/selection/active-line'
 
 import * as resources from './resources';
 import './styles.css';
@@ -20,15 +33,6 @@ function Ide({ value, onChange }) {
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
     
     const handleChange = (editor, data, value) => {
-        if(value.endsWith("(")) {
-            value = value + ')';
-        }
-        if(value.endsWith("{")) {
-            value = value + '}';
-        }
-        if(value.endsWith("[")) {
-            value = value + ']';
-        }
         onChange(value);
     }
     
@@ -163,11 +167,24 @@ function Ide({ value, onChange }) {
                 value={value}
                 className="ide"
                 options={{
+                    autofocus: true,
                     lineWrapping: true,
                     lint: true,
                     mode: `${lang[language]}`,
                     theme: 'material',
-                    lineNumbers: true                        
+                    lineNumbers: true,
+                    extraKeys: {
+                        'Cmd-/' : 'toggleComment',
+                        'Ctrl-/' : 'toggleComment'
+                    },
+                    closeOnUnfocus: false,
+                    matchBrackets: true,
+                    autoCloseBrackets: true,
+                    matchTags: true,
+                    autoCloseTags: true,
+                    foldGutter: true,
+                    gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+                    styleActiveLine: true
                 }}
             />
             <Fab color="primary" aria-label="add" onClick={inputToggle} style={{zIndex: 100}}>

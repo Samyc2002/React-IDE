@@ -1,5 +1,7 @@
 @import 'codemirror/lib/codemirror.css';
 @import 'codemirror/theme/material.css';
+@import 'codemirror/addon/fold/foldgutter.css';
+@import 'codemirror/addon/display/fullscreen.css';
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap');
 
 .ide {
@@ -53,6 +55,8 @@
     width: 90vw;
     border-bottom-left-radius: 3.5px;
     border-bottom-right-radius: 3.5px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: medium;
 }
 .MuiFab-root{
     position: absolute !important;
@@ -82,4 +86,11 @@
     justify-content: center;
     align-items: center;
     text-align: center;
+}
+.CodeMirror-hints{
+    background-color: white;
+    list-style: none;
+    margin-left: 0; 
+    cursor: pointer;
+    position: absolute;
 }
