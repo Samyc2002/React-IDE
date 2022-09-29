@@ -1,3 +1,16 @@
 # React-IDE
 An online based IDE to execute code made using React.
-The server folder is useless, but I was compelled to keep it as it gave me quite some pain to write the code :D
+
+## What to do
+
+There are two main tasks that need to be done.
+
+- [ ] Add autosuggest feature for the IDE and make it responsive too.
+- [ ] Add a file reader that parses the file on uploading. Also, a file upload option as well.
+
+These are some things that can be implemented as well.
+
+- [ ] Add a file system that the user can use to work on multiple files.
+- [ ] Add a github clone repo feature that can take out files from github.
+
+Please Read the CONTRIBUTING.md for instructions regarding code contributions.
