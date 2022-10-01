@@ -53,4 +53,4 @@ To contribute to the project, first visit the issues tab in guthub and take up a
 - After pushing, make a PR (pull request) to the main branch of the actual repository
 - We will verify your PR post that and merge it if everything looks good. 
 
-Please read the issues thouroughly and ask any questions to clarify your doubts before contributing so as to avoid misinterpretation.
+Please read through the README to get to know what all needs to be done. In case of any queries, use the chat platform for the team to clarify them.
