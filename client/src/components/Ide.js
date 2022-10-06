@@ -25,6 +25,7 @@ import 'codemirror/addon/selection/active-line'
 
 import * as resources from './resources';
 import './styles.css';
+import ImportFileButton from './ImportFileButton';
 
 function Ide({ value, onChange }) {
 
@@ -141,7 +142,8 @@ function Ide({ value, onChange }) {
                 <Typography variant={isTabletorMobile?'subtitle1':'h6'} className="heading">
                     <strong>Online Code Editor</strong>
                 </Typography>
-                <div style={{ paddingRight: '2vh' }}>
+                <div className='action-cont' style={{ paddingRight: '2vh' }}>
+                    <ImportFileButton onChange={onChange} />
                     <FormControl className="change-language">
                         <InputLabel id="demo-simple-select-label">Language</InputLabel>
                         <Select
