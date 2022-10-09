@@ -143,7 +143,7 @@ function Ide({ value, onChange }) {
                     <strong>Online Code Editor</strong>
                 </Typography>
                 <div className='action-cont' style={{ paddingRight: '2vh' }}>
-                    <ImportFileButton onChange={onChange} />
+                    <ImportFileButton onChange={onChange} handleChange={handlechange} />
                     <FormControl className="change-language">
                         <InputLabel id="demo-simple-select-label">Language</InputLabel>
                         <Select
