@@ -7,7 +7,7 @@ There are two main tasks that need to be done.
 
 - [ ] Add autosuggest feature for the IDE and make it responsive too.
 - [x] Add a file reader that parses the file on uploading. Also, a file upload option as well.
-- [ ] Add language auto select on file upload.
+- [x] Add language auto select on file upload.
 
 These are some things that can be implemented as well.
 
