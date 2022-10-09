@@ -2,7 +2,18 @@ import { Button } from '@material-ui/core'
 import React from 'react'
 import "./ImportFileButton.css"
 
-export default function ImportFileButton({onChange}) {
+export default function ImportFileButton({onChange, handleChange}) {
+    const mapLang = {
+        "c": 0,
+        "cpp": 1,
+        "cs": 2,
+        "java": 3,
+        "py": 4,
+        "rb": 5,
+        "kt": 6,
+        "swift": 7,
+    };
+
     const loadFile = async (e) => {
         const files = e.target.files;
         if (files.length < 1) return;
@@ -18,6 +29,7 @@ export default function ImportFileButton({onChange}) {
             const data = e.target.result;
             if (e.loaded) {
                 onChange(data);
+                handleChange({target: {value: mapLang[file.name.split('.')[file.name.split('.').length-1]]}})
             }
         };
     };
@@ -25,7 +37,7 @@ export default function ImportFileButton({onChange}) {
   return (
     <Button onChange={(e) => loadFile(e)} color="primary" variant="contained" component="label">
         Import file
-        <input id="importfile" hidden accept=".c, .cpp, .hpp, .h, .java, .py, .rb, .kt, .swift" type="file" />
+        <input id="importfile" hidden accept=".c, .cpp, .cs, .java, .py, .rb, .kt, .swift" type="file" />
     </Button>
   )
 }
