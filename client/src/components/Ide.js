@@ -31,6 +31,7 @@ function Ide({ value, onChange }) {
 
     const Theme = useTheme();
     const isTabletorMobile = useMediaQuery('(max-width:800px)');
+    const isMobile = useMediaQuery('(max-width:500px)');
     const fullScreen = useMediaQuery(Theme.breakpoints.down('sm'));
 
     const handleChange = (editor, data, value) => {
@@ -201,10 +202,12 @@ function Ide({ value, onChange }) {
 
     return (
         <div className="window">
-            <div className="header">
+          <div className={isMobile ? "header-small" : "header"}>
+              {!isMobile && (
                 <Typography variant={isTabletorMobile?'subtitle1':'h6'} className="heading">
                     <strong>Online Code Editor</strong>
                 </Typography>
+              )}
                 <div className='action-cont' style={{ paddingRight: '2vh' }}>
                     <ImportFileButton onChange={onChange} handleChange={handlechange} />
                     <FormControl className="change-theme">
