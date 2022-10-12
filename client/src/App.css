@@ -4,8 +4,8 @@
   background-color: #eeeeed;
 }
 .App{
-  padding: 5vh 5vw 5vh 5vw;
-  width: 90vw;
-  border-radius: 15px;
+  padding: 0;
+  /* width: 90vw; */
+  /* border-radius: 15px; */
   overflow: hidden;
 }

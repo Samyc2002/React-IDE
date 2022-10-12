@@ -152,14 +152,9 @@ function Ide({ value, onChange }) {
                             value={lng}
                             onChange={handlechange}
                         >
-                        <MenuItem value={0}>{lang_show[0]}</MenuItem>
-                        <MenuItem value={1}>{lang_show[1]}</MenuItem>
-                        <MenuItem value={2}>{lang_show[2]}</MenuItem>
-                        <MenuItem value={3}>{lang_show[3]}</MenuItem>
-                        <MenuItem value={4}>{lang_show[4]}</MenuItem>
-                        <MenuItem value={5}>{lang_show[5]}</MenuItem>
-                        <MenuItem value={6}>{lang_show[6]}</MenuItem>
-                        <MenuItem value={7}>{lang_show[7]}</MenuItem>
+                          {lang_show.map((ls, id) => (
+                              <MenuItem value={id}>{ls}</MenuItem>
+                          ))}
                         </Select>
                     </FormControl>
                 </div>
