@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controlled as ControlledEditor } from 'react-codemirror2';
 import { Typography, Select, InputLabel, MenuItem, FormControl, useMediaQuery, Fab, Dialog, DialogTitle,DialogContent, DialogContentText, DialogActions, Button, TextField } from '@material-ui/core';
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
@@ -32,11 +32,11 @@ function Ide({ value, onChange }) {
     const theme = useTheme();
     const isTabletorMobile = useMediaQuery('(max-width:800px)');
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-    
+
     const handleChange = (editor, data, value) => {
         onChange(value);
     }
-    
+
     const [language, setLanguage] = useState("");
     const [lng, setLng] = useState("");
     const [output, setOutput] = useState("Wait for a couple of seconds please.");
@@ -47,9 +47,15 @@ function Ide({ value, onChange }) {
     const [input, setInput] = useState("");
 
     const handlechange = (e) => {
+        localStorage.setItem('lang', e.target.value);
         setLanguage(lang_store[e.target.value]);
         setLng(lang_show[e.target.value])
     }
+
+    useEffect(() => {
+        const lng = Number(localStorage.getItem('lang'));
+        handlechange({target: {value: lng}});
+    }, [handlechange]);
     
     const handleCloseIn = () => {
         setOpenIn(false);
