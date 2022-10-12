@@ -35,7 +35,7 @@ export default function ImportFileButton({onChange, handleChange}) {
     };
 
   return (
-    <Button onChange={(e) => loadFile(e)} color="primary" variant="contained" component="label">
+      <Button onChange={(e) => loadFile(e)} color="secondary" variant="text" component="label" style={{color: "#4caf50"}}>
         Import file
         <input id="importfile" hidden accept=".c, .cpp, .cs, .java, .py, .rb, .kt, .swift" type="file" />
     </Button>

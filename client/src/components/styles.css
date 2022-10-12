@@ -30,7 +30,7 @@
 }
 #select-language{
     color: #eeeeed !important;
-    width: 20vw;
+    width: 10vw;
     height: 50%;
 }
 .MuiSelect-icon{
@@ -93,4 +93,7 @@
     margin-left: 0; 
     cursor: pointer;
     position: absolute;
+}
+.MuiButton-textSecondary:hover {
+  background-color: rgba(76, 175, 80, 0.04) !important;
 }
